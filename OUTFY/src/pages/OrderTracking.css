@@ -1,0 +1,334 @@
+.order-tracking-page {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tracking-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 24px;
+  flex: 1;
+  width: 100%;
+}
+
+.tracking-header {
+  margin-bottom: 32px;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.back-link:hover {
+  color: #0f172a;
+}
+
+.tracking-header-title h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.tracking-header-title h1 span {
+  color: #38bdf8;
+}
+
+.tracking-header-title p {
+  color: #64748b;
+  margin: 0;
+}
+
+/* Cancelled Banner */
+.tracking-cancelled-banner {
+  background: #fef2f2;
+  border: 1px solid #f87171;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+}
+
+.tracking-cancelled-banner h3 {
+  color: #b91c1c;
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.tracking-cancelled-banner p {
+  margin: 0;
+  color: #7f1d1d;
+  font-size: 14px;
+}
+
+/* Progress Bar */
+.tracking-progress-section {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  margin-bottom: 32px;
+}
+
+.progress-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100px; /* Fixed width for centering text */
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 12px;
+  border: 4px solid #fff; /* to cut out the line behind it */
+  transition: all 0.3s;
+}
+
+.step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* Line behind steps */
+.step-line {
+  position: absolute;
+  top: 20px;
+  left: 70px; /* half of width (50) + half of icon (20) */
+  width: calc(100% + 20px); /* adjust based on parent spacing */
+  height: 4px;
+  background: #e2e8f0;
+  z-index: -1;
+  transition: all 0.3s;
+}
+
+/* States */
+.progress-step.completed .step-icon {
+  background: #10b981;
+  color: #fff;
+}
+
+.progress-step.completed .step-label {
+  color: #10b981;
+}
+
+.step-line.filled {
+  background: #10b981;
+}
+
+.progress-step.current .step-icon {
+  background: #38bdf8;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+}
+
+.progress-step.current .step-label {
+  color: #0f172a;
+}
+
+/* Layout Grid */
+.tracking-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.tracking-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  margin-bottom: 24px;
+}
+
+.tracking-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 16px;
+}
+
+/* Customer Timeline */
+.customer-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  padding-left: 16px;
+}
+
+.customer-timeline::before {
+  content: '';
+  position: absolute;
+  top: 8px; bottom: 8px; left: 19px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.c-timeline-item {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.c-timeline-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  margin-top: 4px;
+  z-index: 1;
+}
+
+.c-timeline-item.active .c-timeline-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+}
+
+.c-timeline-content {
+  flex: 1;
+}
+
+.c-timeline-content h4 {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.c-timeline-time {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.c-timeline-time .relative-time {
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.no-history {
+  color: #94a3b8;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Mini Order Details */
+.t-order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.t-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.t-item-info {
+  display: flex;
+  gap: 8px;
+}
+
+.t-qty { color: #64748b; font-weight: 600; }
+.t-name { color: #0f172a; }
+.t-price { font-weight: 600; color: #0f172a; }
+
+.t-order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px dashed #e2e8f0;
+  font-weight: 700;
+  font-size: 16px;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.t-payment-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.t-payment-status .label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.badge.pending { background: #ffedd5; color: #ea580c; }
+.badge.paid { background: #dcfce7; color: #16a34a; }
+.badge.failed { background: #fee2e2; color: #dc2626; }
+.badge.refunded { background: #f1f5f9; color: #475569; }
+
+/* Address */
+.t-address {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.t-address p { margin: 4px 0 0 0; }
+.t-address strong { color: #0f172a; display: block; margin-bottom: 8px; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tracking-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .progress-step {
+    width: 80px;
+  }
+  
+  .step-label {
+    font-size: 10px;
+  }
+  
+  .step-line {
+    left: 60px;
+  }
+}

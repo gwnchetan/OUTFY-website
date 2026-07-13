@@ -1,0 +1,20 @@
+# Git ignore at workspace root
+
+# Frontend Node Modules & Build
+OUTFY/node_modules/
+OUTFY/dist/
+OUTFY/.env.local
+OUTFY/.env.development.local
+OUTFY/.env.test.local
+OUTFY/.env.production.local
+
+# Backend Node Modules & Secrets
+backend/node_modules/
+backend/.env
+
+# General ignores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

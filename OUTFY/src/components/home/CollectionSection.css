@@ -1,0 +1,87 @@
+.collection__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.collection__nav-btns { display: flex; gap: 8px; }
+.collection__nav-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--col-border);
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--col-mid);
+  transition: all var(--t-fast);
+}
+.collection__nav-btn:hover {
+  border-color: var(--col-dark);
+  background: var(--col-dark);
+  color: #fff;
+}
+
+/* Tabs */
+.collection__tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--col-border);
+  padding-bottom: 0;
+}
+.collection__tab {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--col-muted);
+  border-radius: var(--rad-pill) var(--rad-pill) 0 0;
+  transition: color var(--t-fast);
+  white-space: nowrap;
+}
+.collection__tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 2px;
+  background: var(--col-dark);
+  transform: scaleX(0);
+  transition: transform var(--t-mid) var(--ease);
+}
+.collection__tab.active { color: var(--col-dark); font-weight: 600; }
+.collection__tab.active::after { transform: scaleX(1); }
+.collection__tab:hover { color: var(--col-dark); }
+
+/* Grid */
+.collection__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Wishlist active state */
+.product-card__wish.wished {
+  opacity: 1;
+  background: rgba(255,255,255,0.95);
+  color: #E05A5A;
+}
+.product-card__wish.wished svg { fill: #E05A5A; stroke: #E05A5A; }
+
+/* Footer */
+.collection__footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+@media (max-width: 1024px) {
+  .collection__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .collection__grid { grid-template-columns: repeat(2, 1fr); }
+  .collection__tab { padding: 8px 14px; font-size: 12px; }
+}
+@media (max-width: 480px) {
+  .collection__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+}

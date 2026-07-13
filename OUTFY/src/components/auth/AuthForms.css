@@ -1,0 +1,591 @@
+/* ============================================
+   AuthForms.css — Light Minimal Modern
+   Design: White cards, sharp type, 
+   warm stone/sand accent, crisp interactions
+   ============================================ */
+
+/* Auth forms use the global font stack from index.css */
+
+/* ==========================================
+   FORM CONTAINER
+   ========================================== */
+.auth-form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: formIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes formIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   BRAND BADGE
+   ========================================== */
+.auth-brand-badge {
+  display: none; /* Brand shown on left panel; hidden on form side */
+}
+
+/* ==========================================
+   HEADER
+   ========================================== */
+.auth-header {
+  margin-bottom: 28px;
+}
+
+.auth-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.1;
+  color: #1A1714;
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #9E9A94;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* OTP icon */
+.auth-otp-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #F5F3F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7A6F62;
+  margin-bottom: 14px;
+}
+
+.auth-email-highlight {
+  color: #1A1714;
+  font-weight: 600;
+}
+
+/* ==========================================
+   GOOGLE BUTTON
+   ========================================== */
+.auth-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 20px;
+  background: #FFFFFF;
+  border: 1.5px solid #E8E4DF;
+  border-radius: 10px;
+  color: #1A1714;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  margin-bottom: 18px;
+}
+
+.auth-google-btn:hover {
+  border-color: #C8C0B5;
+  background: #FAFAF9;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.auth-google-btn:active {
+  background: #F5F3F0;
+}
+
+/* ==========================================
+   DIVIDER
+   ========================================== */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.auth-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #EBE7E2;
+}
+
+.auth-divider-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #BEB9B2;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ==========================================
+   FORM
+   ========================================== */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---- Field ---- */
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #B0A99F;
+  transition: color 0.2s ease;
+}
+
+.auth-field.focused .auth-label {
+  color: #1A1714;
+}
+
+.auth-field.filled .auth-label {
+  color: #7A6F62;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* The input */
+.auth-input {
+  width: 100%;
+  background: #FAFAF9;
+  border: 1.5px solid #EBE7E2;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1A1714;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.auth-input-wrapper .auth-input {
+  padding-right: 44px;
+}
+
+.auth-input::placeholder {
+  color: #C8C0B5;
+  font-weight: 400;
+}
+
+.auth-input:focus {
+  border-color: #1A1714;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26, 23, 20, 0.06);
+}
+
+.auth-field-line {
+  display: none;
+}
+
+.auth-eye-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #C8C0B5;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.auth-eye-btn:hover {
+  color: #7A6F62;
+}
+
+/* ==========================================
+   FORGOT PASSWORD
+   ========================================== */
+.auth-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
+
+.auth-forgot-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9E9A94;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.auth-forgot-link:hover {
+  color: #1A1714;
+}
+
+/* ==========================================
+   PASSWORD STRENGTH
+   ========================================== */
+.auth-password-strength {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #FAFAF9;
+  border: 1px solid #EBE7E2;
+  border-radius: 10px;
+  animation: formIn 0.3s ease both;
+}
+
+.auth-strength-bars {
+  display: flex;
+  gap: 5px;
+}
+
+.auth-strength-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 99px;
+  background: #EBE7E2;
+}
+
+.auth-strength-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-pass-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.auth-pass-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #B0A99F;
+  transition: color 0.25s;
+}
+
+.auth-pass-rule.pass {
+  color: #2E7D5E;
+}
+
+.auth-pass-rule-icon {
+  display: flex;
+  align-items: center;
+  width: 14px;
+  flex-shrink: 0;
+}
+
+.auth-pass-dot {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #C8C0B5;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   ERROR / SUCCESS BANNERS
+   ========================================== */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FEF3F3;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #D93025;
+  animation: formIn 0.25s ease both;
+}
+
+.auth-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F0FAF5;
+  border: 1px solid #BBE4D0;
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #1F7A52;
+  animation: formIn 0.25s ease both;
+}
+
+/* ==========================================
+   SUBMIT BUTTON
+   ========================================== */
+.auth-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 24px;
+  background: #1A1714;
+  border: none;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
+  margin-top: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-submit-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s ease;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  background: #2E2A26;
+  box-shadow: 0 4px 20px rgba(26, 23, 20, 0.2);
+  transform: translateY(-1px);
+}
+
+.auth-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.auth-submit-btn:disabled {
+  background: #D1CCC6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ==========================================
+   SPINNER
+   ========================================== */
+.auth-spinner {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   SWITCH TEXT
+   ========================================== */
+.auth-switch-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #9E9A94;
+  text-align: center;
+  margin-top: 18px;
+}
+
+.auth-switch-link {
+  background: none;
+  border: none;
+  color: #1A1714;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #C8C0B5;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s, color 0.2s;
+  padding: 0;
+}
+
+.auth-switch-link:hover {
+  text-decoration-color: #1A1714;
+}
+
+.auth-switch-link.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   OTP SCREEN
+   ========================================== */
+.auth-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #9E9A94;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 28px;
+  transition: color 0.2s;
+}
+
+.auth-back-btn:hover {
+  color: #1A1714;
+}
+
+/* OTP digit cells */
+.auth-otp-inputs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.auth-otp-cell {
+  width: 50px;
+  height: 58px;
+  border: 1.5px solid #EBE7E2;
+  border-radius: 12px;
+  background: #FAFAF9;
+  color: #1A1714;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  caret-color: #1A1714;
+  -webkit-appearance: none;
+}
+
+.auth-otp-cell:focus {
+  border-color: #1A1714;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26, 23, 20, 0.07);
+}
+
+.auth-otp-cell.filled {
+  border-color: #7A6F62;
+  background: #fff;
+  color: #1A1714;
+}
+
+.auth-otp-cell.error {
+  border-color: #D93025;
+  background: #FEF3F3;
+  animation: cellShake 0.38s ease both;
+}
+
+.auth-otp-cell.success {
+  border-color: #2E7D5E;
+  background: #F0FAF5;
+  color: #1F7A52;
+}
+
+@keyframes cellShake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-5px); }
+  40%       { transform: translateX(5px); }
+  60%       { transform: translateX(-3px); }
+  80%       { transform: translateX(3px); }
+}
+
+/* OTP progress bar */
+.auth-otp-progress {
+  height: 2px;
+  background: #EBE7E2;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.auth-otp-progress-fill {
+  height: 100%;
+  background: #1A1714;
+  border-radius: 99px;
+  transition: width 0.25s ease;
+}
+
+/* OTP timer */
+.auth-otp-timer-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.auth-otp-timer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #9E9A94;
+}
+
+.auth-otp-timer strong {
+  color: #1A1714;
+  font-weight: 600;
+}
+
+.auth-otp-timer.expired {
+  color: #D93025;
+}
+
+/* Resend row */
+.auth-resend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 14px;
+}
+
+.auth-resend-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #B0A99F;
+}
+
+.loading-inline {
+  opacity: 0.5;
+  cursor: wait;
+}

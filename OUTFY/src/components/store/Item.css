@@ -1,0 +1,75 @@
+/* ── Card wrapper ────────────────────────────────────────── */
+.item-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── Image ───────────────────────────────────────────────── */
+.item-card__img-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f4f2;
+  aspect-ratio: 3 / 4;
+}
+
+.item-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.item-card:hover .item-card__img-wrap img {
+  transform: scale(1.04);
+}
+
+/* ── NEW badge ───────────────────────────────────────────── */
+.item-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #fff;
+  color: #0d0d0f;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ── Info ────────────────────────────────────────────────── */
+.item-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 2px;
+}
+
+.item-card__category {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #999;
+  margin: 0;
+}
+
+.item-card__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0d0d0f;
+  margin: 0;
+}
+
+.item-card__price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0d0d0f;
+  margin: 0;
+}

@@ -1,0 +1,65 @@
+/* Brand strip — label on top, scrolling track below, properly masked */
+.brand-strip {
+  padding: 18px 0 20px;
+  overflow: hidden;
+  border-top: 1px solid var(--col-border);
+  border-bottom: 1px solid var(--col-border);
+  background: var(--col-bg-stone);
+}
+
+/* Label sits centered above the marquee */
+.brand-strip__label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--col-muted);
+  text-align: center;
+  margin-bottom: 14px;
+  display: block;
+}
+
+/* Scrolling row — full width, overflow hidden, edge-fade mask */
+.brand-strip__row {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+.brand-strip__track {
+  display: flex;
+  align-items: center;
+  gap: 52px;
+  width: max-content;
+  animation: scrollBrands 26s linear infinite;
+}
+
+.brand-strip__track:hover { animation-play-state: paused; }
+
+.brand-strip__name {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--col-mid);
+  white-space: nowrap;
+  transition: color var(--t-fast);
+  cursor: default;
+  user-select: none;
+}
+.brand-strip__name:hover { color: var(--col-dark); }
+
+/* Decorative separator dot between names */
+.brand-strip__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--col-border);
+  flex-shrink: 0;
+}
+
+@keyframes scrollBrands {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

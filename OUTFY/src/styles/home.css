@@ -1,0 +1,312 @@
+/* ============================================
+   Shared Home Styles — OUTFY
+   Scroll-reveal, animations, buttons, cards
+   ============================================ */
+
+/* ==========================================
+   CONTAINER & SECTION
+   ========================================== */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--container-pad);
+}
+
+.section          { padding: var(--sp-3xl) 0; }
+.section--tight   { padding: var(--sp-2xl) 0; }
+.section--dark    { background: var(--col-dark); color: #fff; }
+.section--soft    { background: var(--col-bg-soft); }
+.section--stone   { background: var(--col-bg-stone); }
+
+/* ==========================================
+   TYPOGRAPHY — DM Serif Display + Manrope
+   ========================================== */
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--col-muted);
+  margin-bottom: var(--sp-sm);
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-weight: 400; /* DM Serif Display looks best at regular */
+  font-size: clamp(30px, 3.2vw, 46px);
+  line-height: 1.12;
+  color: var(--col-dark);
+  letter-spacing: -0.01em;
+}
+.section-title--light { color: #fff; }
+.section-subtitle {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--col-muted);
+  line-height: 1.8;
+  margin-top: var(--sp-sm);
+  max-width: 420px;
+}
+
+/* ==========================================
+   BUTTONS
+   ========================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: var(--rad-pill);
+  transition: all var(--t-mid) var(--ease);
+  cursor: pointer;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer on hover */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.45s ease;
+}
+.btn:hover::after { transform: translateX(100%); }
+
+.btn--primary {
+  padding: 13px 26px;
+  background: var(--col-dark);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+.btn--primary:hover {
+  background: #2a2a2a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.btn--primary:active { transform: translateY(0); }
+
+.btn--outline {
+  padding: 11px 24px;
+  background: transparent;
+  color: var(--col-dark);
+  border: 1.5px solid var(--col-border);
+}
+.btn--outline:hover {
+  border-color: var(--col-dark);
+  background: var(--col-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn--outline-light {
+  padding: 11px 24px;
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.btn--outline-light:hover {
+  background: #fff;
+  color: var(--col-dark);
+  border-color: #fff;
+}
+
+.btn--ghost {
+  padding: 6px 0;
+  color: var(--col-dark);
+  border-bottom: 1.5px solid var(--col-dark);
+  border-radius: 0;
+  font-size: 13px;
+  overflow: visible;
+}
+.btn--ghost::after { display: none; }
+.btn--ghost:hover { opacity: 0.55; }
+
+/* ==========================================
+   TAG
+   ========================================== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: var(--rad-pill);
+  background: var(--col-bg-stone);
+  color: var(--col-mid);
+  border: 1px solid var(--col-border);
+}
+
+/* ==========================================
+   PRODUCT CARD
+   ========================================== */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+}
+.product-card__img-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--rad-md);
+  background: var(--col-bg-soft);
+  aspect-ratio: 3/4;
+}
+.product-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s var(--ease);
+  will-change: transform;
+}
+.product-card:hover .product-card__img-wrap img {
+  transform: scale(1.06);
+}
+
+/* Quick-add overlay on hover */
+.product-card__img-wrap::after {
+  content: 'Quick Add';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(17,17,17,0.82);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 14px;
+  transform: translateY(100%);
+  transition: transform 0.3s var(--ease);
+}
+.product-card:hover .product-card__img-wrap::after {
+  transform: translateY(0);
+}
+
+.product-card__badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: #fff;
+  color: var(--col-dark);
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--rad-pill);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.product-card__wish {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--col-mid);
+  opacity: 0;
+  transition: opacity var(--t-fast), transform var(--t-mid) var(--ease-bounce);
+  transform: scale(0.8);
+}
+.product-card:hover .product-card__wish {
+  opacity: 1;
+  transform: scale(1);
+}
+.product-card__info { display: flex; flex-direction: column; gap: 3px; }
+.product-card__name {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--col-dark);
+  line-height: 1.3;
+}
+.product-card__category {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--col-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.product-card__price {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--col-dark);
+  margin-top: 4px;
+}
+
+/* ==========================================
+   SCROLL REVEAL ANIMATIONS
+   All elements start hidden. Class 'revealed'
+   (added by useReveal hook) triggers entrance.
+   ========================================== */
+
+/* Base hidden state */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s var(--ease),
+    transform 0.65s var(--ease);
+  /* respect stagger delay from hook */
+  transition-delay: var(--stagger, 0ms);
+}
+
+/* Revealed state */
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slide from left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+  transition-delay: var(--stagger, 0ms);
+}
+.reveal-left.revealed { opacity: 1; transform: translateX(0); }
+
+/* Slide from right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+  transition-delay: var(--stagger, 0ms);
+}
+.reveal-right.revealed { opacity: 1; transform: translateX(0); }
+
+/* Scale up */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+  transition-delay: var(--stagger, 0ms);
+}
+.reveal-scale.revealed { opacity: 1; transform: scale(1); }
+
+/* Legacy helper — instant, no observer (fallback) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-up { animation: fadeUp 0.6s var(--ease) both; }
+.animate-up--d1 { animation-delay: 0.1s; }
+.animate-up--d2 { animation-delay: 0.2s; }
+.animate-up--d3 { animation-delay: 0.3s; }

@@ -1,0 +1,66 @@
+/* ============================================
+   OUTFY Global Design Tokens & Reset
+   Fonts: DM Serif Display (headings) + Manrope (body)
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Colors */
+  --col-bg:        #FFFFFF;
+  --col-bg-soft:   #F8F5F1;
+  --col-bg-stone:  #F0ECE6;
+  --col-dark:      #111111;
+  --col-dark-2:    #1A1714;
+  --col-mid:       #4A4540;
+  --col-muted:     #9E9A94;
+  --col-border:    #E8E4DE;
+  --col-gold:      #C9A84C;
+  --col-gold-lt:   #F0D9B5;
+
+  /* Typography — premium editorial duo */
+  --font-serif:    'DM Serif Display', Georgia, serif;
+  --font-sans:     'Manrope', system-ui, sans-serif;
+
+  /* Spacing */
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  16px;
+  --sp-lg:  24px;
+  --sp-xl:  40px;
+  --sp-2xl: 64px;
+  --sp-3xl: 96px;
+
+  /* Container */
+  --container-max: 1280px;
+  --container-pad: 0 48px;
+
+  /* Radius */
+  --rad-sm: 8px;
+  --rad-md: 14px;
+  --rad-lg: 20px;
+  --rad-xl: 28px;
+  --rad-pill: 999px;
+
+  /* Transitions */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast: 0.18s;
+  --t-mid:  0.32s;
+  --t-slow: 0.55s;
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--col-bg);
+  color: var(--col-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+ul, ol { list-style: none; }
