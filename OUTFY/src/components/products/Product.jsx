@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Product.css';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import Items from '../store/items';
+import Items from '../store/Items';
 
 // ── Icons ──────────────────────────────────────────────────
 const HeartIcon = ({ filled }) => (
