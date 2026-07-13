@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Item from './item';
-import './items.css';
+import Item from './Item';
+import './Items.css';
 import { API_BASE } from '../../config/api';
 
 const Items = ({ limit = 40 }) => {
