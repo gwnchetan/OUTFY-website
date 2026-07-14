@@ -13,6 +13,9 @@ export function AuthProvider({ children }) {
   // ── Silent refresh on mount ─────────────────────────────────
   useEffect(() => {
     const restore = async () => {
+      let token = null;
+
+      // 1) Try refresh cookie first (works for same-domain & email/password logins)
       try {
         const res = await fetch(`${API}/auth/refresh`, {
           method: 'POST',
@@ -21,23 +24,41 @@ export function AuthProvider({ children }) {
         if (res.ok) {
           const data = await res.json();
           if (data.accessToken) {
-            localStorage.setItem('accessToken', data.accessToken);
-            setAccessToken(data.accessToken);
-            // Fetch user profile with the new token
-            const meRes = await fetch(`${API}/user/me`, {
-              headers: { Authorization: `Bearer ${data.accessToken}` },
-            });
-            if (meRes.ok) {
-              const me = await meRes.json();
-              setUser({ id: me._id, name: me.name, email: me.email, avatar: me.avatar, phone: me.phone, authProvider: me.authProvider, role: me.role });
-            }
+            token = data.accessToken;
+            localStorage.setItem('accessToken', token);
+            setAccessToken(token);
           }
         }
       } catch {
-        // No valid session — stay logged out
-      } finally {
-        setLoading(false);
+        // Cookie-based refresh failed — try fallback
       }
+
+      // 2) Fallback: use token already in localStorage (set by Google OAuth redirect)
+      if (!token) {
+        token = localStorage.getItem('accessToken');
+      }
+
+      // 3) If we have any valid token, fetch the user profile
+      if (token) {
+        try {
+          const meRes = await fetch(`${API}/user/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (meRes.ok) {
+            const me = await meRes.json();
+            setAccessToken(token);
+            setUser({ id: me._id, name: me.name, email: me.email, avatar: me.avatar, phone: me.phone, authProvider: me.authProvider, role: me.role });
+          } else {
+            // Token is invalid/expired — clean up
+            localStorage.removeItem('accessToken');
+            setAccessToken(null);
+          }
+        } catch {
+          // Network error fetching profile
+        }
+      }
+
+      setLoading(false);
     };
     restore();
   }, []);
