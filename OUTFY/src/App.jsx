@@ -18,8 +18,15 @@ import NotFoundPage from './pages/NotFoundPage';
 // ── Auth Success handler — Google OAuth redirect lands here ─
 function AuthSuccessPage() {
   React.useEffect(() => {
-    // The accessToken is in localStorage if set, otherwise session cookie is sufficient.
-    // Just navigate home and AuthContext will restore session via /refresh.
+    // Extract token from URL query params
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    
+    if (token) {
+      localStorage.setItem('accessToken', token);
+    }
+    
+    // Navigate home and AuthContext will use the new token
     window.location.replace('/');
   }, []);
   return (

@@ -139,8 +139,8 @@ exports.googleCallback = (req, res) => {
   const { accessToken, refreshToken } = generateTokens(user._id, user.role);
   setRefreshTokenCookie(res, refreshToken);
 
-  // Redirect to frontend auth-success handler
-  res.redirect(`${process.env.FRONTEND_URL}/auth-success`);
+  // Redirect to frontend auth-success handler with token
+  res.redirect(`${process.env.FRONTEND_URL}/auth-success?token=${accessToken}`);
 };
 
 
