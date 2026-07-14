@@ -37,7 +37,8 @@ app.use(cors({
     // Allow requests with no origin (curl, Postman, mobile apps)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
-    // Don't expose which origin was blocked
+    // Log the mismatch for debugging
+    console.error(`[CORS] Blocked origin: "${origin}" | Allowed: [${allowedOrigins.join(', ')}]`);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,

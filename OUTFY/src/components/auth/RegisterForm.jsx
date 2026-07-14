@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './AuthForms.css';
 
 import { API_BASE } from '../../config/api';
+import { useAuth } from '../../context/AuthContext';
 
 const API_BASE_AUTH = `${API_BASE}/auth`;
 
@@ -43,7 +44,8 @@ const passwordRules = [
   { label: 'One number', test: (p) => /[0-9]/.test(p) },
 ];
 
-export default function RegisterForm({ onSwitchToLogin, onRegistered }) {
+export default function RegisterForm({ onSwitchToLogin }) {
+  const { login } = useAuth();
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,14 +78,16 @@ export default function RegisterForm({ onSwitchToLogin, onRegistered }) {
       const res = await fetch(`${API_BASE_AUTH}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(form),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.message || 'Registration failed. Please try again.');
       } else {
-        // Pass email to OTP screen
-        onRegistered(form.email);
+        // Log the user in directly
+        login(data);
+        window.location.href = '/';
       }
     } catch {
       setError('Network error. Please check your connection.');

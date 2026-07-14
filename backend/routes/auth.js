@@ -11,8 +11,6 @@ router.use(authLimiter);
 
 router.post('/register', registerLimiter, authController.register);
 router.post('/login', loginLimiter, authController.login);
-router.post('/verify-email', authController.verifyEmail);
-router.post('/resend-otp', authController.resendOTP);
 router.post('/refresh', authController.refresh);
 router.post('/logout', authController.logout);
 

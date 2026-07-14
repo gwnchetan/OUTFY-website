@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
-import OTPScreen from '../components/auth/OTPScreen';
 import './AuthPage.css';
 
 /**
  * AuthPage — OUTFY Auth Hub
- * Manages: login | register | otp
+ * Manages: login | register
  *
  * URL query param ?mode=register opens register tab on load.
  * URL query param ?error=... (from Google OAuth) shows error banner.
  */
 export default function AuthPage() {
-  const [view, setView] = useState('login'); // 'login' | 'register' | 'otp'
-  const [pendingEmail, setPendingEmail] = useState('');
+  const [view, setView] = useState('login'); // 'login' | 'register'
   const [oauthError, setOauthError] = useState('');
 
   useEffect(() => {
@@ -28,11 +26,6 @@ export default function AuthPage() {
     const t = setTimeout(() => setOauthError(''), 6000);
     return () => clearTimeout(t);
   }, [oauthError]);
-
-  const handleRegistered = (email) => {
-    setPendingEmail(email);
-    setView('otp');
-  };
 
   return (
     <div className="auth-page">
@@ -103,34 +96,32 @@ export default function AuthPage() {
           )}
 
           {/* Tab Switcher */}
-          {view !== 'otp' && (
-            <div className="auth-tabs" role="tablist" aria-label="Authentication tabs">
-              <button
-                id="tab-login"
-                role="tab"
-                aria-selected={view === 'login'}
-                className={`auth-tab ${view === 'login' ? 'active' : ''}`}
-                onClick={() => setView('login')}
-                type="button"
-              >
-                Sign In
-              </button>
-              <button
-                id="tab-register"
-                role="tab"
-                aria-selected={view === 'register'}
-                className={`auth-tab ${view === 'register' ? 'active' : ''}`}
-                onClick={() => setView('register')}
-                type="button"
-              >
-                Register
-              </button>
-              <span
-                className="auth-tab-indicator"
-                style={{ transform: view === 'register' ? 'translateX(100%)' : 'translateX(0)' }}
-              />
-            </div>
-          )}
+          <div className="auth-tabs" role="tablist" aria-label="Authentication tabs">
+            <button
+              id="tab-login"
+              role="tab"
+              aria-selected={view === 'login'}
+              className={`auth-tab ${view === 'login' ? 'active' : ''}`}
+              onClick={() => setView('login')}
+              type="button"
+            >
+              Sign In
+            </button>
+            <button
+              id="tab-register"
+              role="tab"
+              aria-selected={view === 'register'}
+              className={`auth-tab ${view === 'register' ? 'active' : ''}`}
+              onClick={() => setView('register')}
+              type="button"
+            >
+              Register
+            </button>
+            <span
+              className="auth-tab-indicator"
+              style={{ transform: view === 'register' ? 'translateX(100%)' : 'translateX(0)' }}
+            />
+          </div>
 
           {/* Form Views */}
           <div className="auth-view-wrapper" key={view}>
@@ -140,14 +131,6 @@ export default function AuthPage() {
             {view === 'register' && (
               <RegisterForm
                 onSwitchToLogin={() => setView('login')}
-                onRegistered={handleRegistered}
-              />
-            )}
-            {view === 'otp' && (
-              <OTPScreen
-                email={pendingEmail}
-                onBack={() => setView('register')}
-                onVerified={() => { window.location.href = '/'; }}
               />
             )}
           </div>
@@ -157,3 +140,4 @@ export default function AuthPage() {
     </div>
   );
 }
+
