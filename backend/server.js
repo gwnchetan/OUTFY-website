@@ -16,6 +16,7 @@ if (missing.length) {
 
 const express      = require('express');
 const cors         = require('cors');
+const compression  = require('compression');
 const cookieParser = require('cookie-parser');
 const passport     = require('./config/passport');
 const authRoutes    = require('./routes/auth');
@@ -25,6 +26,10 @@ const adminRoutes   = require('./routes/admin');
 const connectDB     = require('./db.config');
 
 const app = express();
+
+app.disable('x-powered-by');
+app.set('etag', 'strong');
+app.use(compression({ threshold: 1024 }));
 
 // ── CORS — supports multiple comma-separated origins in FRONTEND_URL ─────────
 const allowedOrigins = (process.env.FRONTEND_URL || '')

@@ -2,8 +2,6 @@
    OUTFY Global Design Tokens & Reset
    Fonts: DM Serif Display (headings) + Manrope (body)
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&display=swap');
-
 :root {
   /* Colors */
   --col-bg:        #FFFFFF;
@@ -64,3 +62,15 @@ img { display: block; max-width: 100%; }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 ul, ol { list-style: none; }
+
+.route-loader {
+  width: 34px;
+  height: 34px;
+  margin: 45vh auto;
+  border: 2px solid var(--col-border);
+  border-top-color: var(--col-gold);
+  border-radius: 50%;
+  animation: route-loader-spin 0.7s linear infinite;
+}
+
+@keyframes route-loader-spin { to { transform: rotate(360deg); } }

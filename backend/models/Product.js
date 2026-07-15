@@ -84,7 +84,16 @@ productSchema.pre('validate', function () {
   }
 });
 
-// Text index for full-text search
+// Target the exact filters and sorts used by the public catalogue. These are
+// built by MongoDB automatically when the application connects to the database.
+productSchema.index({ isActive: 1, category: 1, createdAt: -1 });
+productSchema.index({ isActive: 1, isFeatured: 1, createdAt: -1 });
+productSchema.index({ isActive: 1, price: 1 });
+productSchema.index({ isActive: 1, 'rating.count': -1 });
+
+// Full-text search avoids collection-wide regular-expression scans as a
+// catalogue grows. Keep this existing index shape so deployed databases do not
+// need a disruptive text-index migration.
 productSchema.index({ name: 'text', description: 'text', tags: 'text' });
 
 module.exports = mongoose.model('Product', productSchema);

@@ -79,7 +79,7 @@ export default function ShopPage() {
   const resultsRef = useRef(null);
 
   // ── Data hooks ────────────────────────────────────────────
-  const { categories, loading: catsLoading } = useCategories();
+  const { categories } = useCategories();
   const { products, pagination, loading, error } = useProducts({
     category, search, sort, page, limit: ITEMS_PER_PAGE,
   });

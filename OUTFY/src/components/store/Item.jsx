@@ -10,7 +10,7 @@ const Item = ({ product }) => {
     <a className="item-card" href={`/product/${product._id}`}>
       {/* Image */}
       <div className="item-card__img-wrap">
-        <img src={image} alt={product.name} />
+        <img src={image} alt={product.name} loading="lazy" decoding="async" />
         {product.badge && (
           <span className="item-card__badge">{product.badge}</span>
         )}

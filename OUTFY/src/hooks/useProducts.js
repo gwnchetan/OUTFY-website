@@ -1,101 +1,125 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { API_BASE } from '../config/api';
+import { fetchJson, peekJson } from '../lib/apiClient';
 
 const API = `${API_BASE}/products`;
 
-/**
- * useProducts — Fetch products from the backend API
- *
- * @param {object} params
- * @param {string}  params.category  — category filter ('All' or specific)
- * @param {string}  params.search    — search query string
- * @param {string}  params.sort      — 'newest' | 'price_asc' | 'price_desc' | 'popular'
- * @param {number}  params.page      — page number (1-indexed)
- * @param {number}  params.limit     — items per page
- */
-export function useProducts({ category = 'All', search = '', sort = 'newest', page = 1, limit = 20 } = {}) {
-  const [products,   setProducts]   = useState([]);
-  const [pagination, setPagination] = useState(null);
-  const [loading,    setLoading]    = useState(true);
-  const [error,      setError]      = useState(null);
-  const abortRef = useRef(null);
-
-  const fetchProducts = useCallback(async () => {
-    // Cancel any in-flight request
-    if (abortRef.current) abortRef.current.abort();
-    abortRef.current = new AbortController();
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const params = new URLSearchParams();
-      if (category && category !== 'All') params.set('category', category);
-      if (search.trim()) params.set('search', search.trim());
-      if (sort)  params.set('sort',  sort);
-      if (page)  params.set('page',  page);
-      if (limit) params.set('limit', limit);
-
-      const res  = await fetch(`${API}?${params.toString()}`, { signal: abortRef.current.signal });
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || 'Failed to fetch products');
-
-      setProducts(data.products || []);
-      setPagination(data.pagination || null);
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        setError(err.message || 'Something went wrong');
-        setProducts([]);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [category, search, sort, page, limit]);
-
-  useEffect(() => {
-    fetchProducts();
-    return () => { if (abortRef.current) abortRef.current.abort(); };
-  }, [fetchProducts]);
-
-  return { products, pagination, loading, error, refetch: fetchProducts };
+export function buildProductsUrl({ category = 'All', search = '', sort = 'newest', page = 1, limit = 20 } = {}) {
+  const params = new URLSearchParams();
+  if (category && category !== 'All') params.set('category', category);
+  if (search.trim()) params.set('search', search.trim());
+  if (sort) params.set('sort', sort);
+  if (page) params.set('page', page);
+  if (limit) params.set('limit', limit);
+  return `${API}?${params.toString()}`;
 }
 
-/**
- * useFeaturedProducts — Fetch featured products
- */
+/** Loads catalog pages with a short session cache and automatic request de-duplication. */
+export function useProducts({ category = 'All', search = '', sort = 'newest', page = 1, limit = 20 } = {}) {
+  const requestUrl = useMemo(
+    () => buildProductsUrl({ category, search, sort, page, limit }),
+    [category, search, sort, page, limit],
+  );
+  const initial = peekJson(requestUrl);
+  const [products, setProducts] = useState(() => initial?.products || []);
+  const [pagination, setPagination] = useState(() => initial?.pagination || null);
+  const [loading, setLoading] = useState(() => !initial);
+  const [error, setError] = useState(null);
+  const abortRef = useRef(null);
+
+  const fetchProducts = useCallback(async (force = false) => {
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    const cached = !force && peekJson(requestUrl);
+    setLoading(!cached);
+    setError(null);
+    if (cached) {
+      setProducts(cached.products || []);
+      setPagination(cached.pagination || null);
+    }
+
+    try {
+      const data = await fetchJson(requestUrl, {
+        signal: controller.signal,
+        ttl: 90_000,
+        force,
+      });
+      if (!controller.signal.aborted) {
+        setProducts(data.products || []);
+        setPagination(data.pagination || null);
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError' && !controller.signal.aborted) {
+        setError(err.message || 'Something went wrong');
+        if (!cached) {
+          setProducts([]);
+          setPagination(null);
+        }
+      }
+    } finally {
+      if (!controller.signal.aborted) setLoading(false);
+    }
+  }, [requestUrl]);
+
+  useEffect(() => {
+    void fetchProducts();
+    return () => abortRef.current?.abort();
+  }, [fetchProducts]);
+
+  return { products, pagination, loading, error, refetch: () => fetchProducts(true) };
+}
+
 export function useFeaturedProducts() {
-  const [products, setProducts] = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState(null);
+  const requestUrl = `${API}/featured`;
+  const initial = peekJson(requestUrl);
+  const [products, setProducts] = useState(() => initial || []);
+  const [loading, setLoading] = useState(() => !initial);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    fetch(`${API}/featured`, { signal: controller.signal })
-      .then(r => r.json())
-      .then(data => { setProducts(Array.isArray(data) ? data : []); setLoading(false); })
-      .catch(err => { if (err.name !== 'AbortError') { setError(err.message); setLoading(false); } });
+    const cached = peekJson(requestUrl);
+    if (cached) setProducts(cached);
+    setLoading(!cached);
+
+    fetchJson(requestUrl, { signal: controller.signal, ttl: 5 * 60_000 })
+      .then((data) => setProducts(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        if (err.name !== 'AbortError' && !cached) setError(err.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
     return () => controller.abort();
-  }, []);
+  }, [requestUrl]);
 
   return { products, loading, error };
 }
 
-/**
- * useCategories — Fetch product categories with counts
- */
 export function useCategories() {
-  const [categories, setCategories] = useState([]);
-  const [loading,    setLoading]    = useState(true);
+  const requestUrl = `${API}/categories`;
+  const initial = peekJson(requestUrl);
+  const [categories, setCategories] = useState(() => initial || []);
+  const [loading, setLoading] = useState(() => !initial);
 
   useEffect(() => {
-    fetch(`${API}/categories`)
-      .then(r => r.json())
-      .then(data => { setCategories(Array.isArray(data) ? data : []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
+    const controller = new AbortController();
+    const cached = peekJson(requestUrl);
+    if (cached) setCategories(cached);
+    setLoading(!cached);
+
+    fetchJson(requestUrl, { signal: controller.signal, ttl: 5 * 60_000 })
+      .then((data) => setCategories(Array.isArray(data) ? data : []))
+      .catch(() => {})
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [requestUrl]);
 
   return { categories, loading };
 }

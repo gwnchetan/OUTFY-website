@@ -62,7 +62,7 @@ export default function HeroSection() {
             <span className="hero__image-tag-dot" />
             Premium Collection
           </div>
-          <img src="/hero-model.png" alt="OUTFY hero model in vibrant fashion" className="hero__image" />
+          <img src="/hero-model.png" alt="OUTFY hero model in vibrant fashion" className="hero__image" fetchPriority="high" decoding="async" />
           <div className="hero__image-glow" aria-hidden="true" />
         </div>
 

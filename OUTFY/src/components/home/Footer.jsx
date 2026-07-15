@@ -43,11 +43,12 @@ export default function Footer() {
         {Object.entries(LINKS).map(([title, items]) => {
           const getFooterLink = (item) => {
             if (item === 'About Us') return '/about';
-            if (item === 'New Arrivals') return '/shop';
+            if (item === 'New Arrivals') return '/new-arrivals';
             if (item === 'Dresses') return '/shop?category=Dresses';
             if (item === 'Outerwear') return '/shop?category=Outerwear';
             if (item === 'Knitwear') return '/shop?category=Knitwear';
             if (item === 'Shoes') return '/shop?category=Shoes';
+            if (item === 'Blog') return '/journal';
             return '#';
           };
           return (

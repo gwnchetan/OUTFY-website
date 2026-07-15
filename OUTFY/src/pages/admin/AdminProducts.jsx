@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminProductForm from './AdminProductForm';
 import { API_BASE } from '../../config/api';
+import { invalidateJson } from '../../lib/apiClient';
 import './AdminProducts.css';
 
 export default function AdminProducts() {
@@ -41,6 +42,7 @@ export default function AdminProducts() {
         }
       });
       if (!res.ok) throw new Error('Failed to delete product');
+      invalidateJson(`${API_BASE}/products`);
       setProducts(products.filter(p => p._id !== id));
     } catch (err) {
       alert(err.message);

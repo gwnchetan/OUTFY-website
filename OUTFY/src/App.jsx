@@ -4,16 +4,20 @@ import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import CartDrawer from './components/cart/CartDrawer';
 import ErrorBoundary from './components/ErrorBoundary';
-import HomePage from './pages/HomePage';
-import AuthPage from './pages/AuthPage';
-import ProfilePage from './pages/ProfilePage';
-import ShopPage from './pages/ShopPage';
-import ProductPage from './pages/ProductPage';
-import AdminLayout from './pages/admin/AdminLayout';
-import AboutPage from './pages/AboutPage';
-import CheckoutPage from './pages/CheckoutPage';
-import OrderTracking from './pages/OrderTracking';
-import NotFoundPage from './pages/NotFoundPage';
+
+// Route-level loading keeps the initial home-page JavaScript focused on the
+// storefront instead of downloading checkout, account, and admin code up front.
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const AuthPage = React.lazy(() => import('./pages/AuthPage'));
+const ProfilePage = React.lazy(() => import('./pages/ProfilePage'));
+const ShopPage = React.lazy(() => import('./pages/ShopPage'));
+const ProductPage = React.lazy(() => import('./pages/ProductPage'));
+const AdminLayout = React.lazy(() => import('./pages/admin/AdminLayout'));
+const AboutPage = React.lazy(() => import('./pages/AboutPage'));
+const CheckoutPage = React.lazy(() => import('./pages/CheckoutPage'));
+const OrderTracking = React.lazy(() => import('./pages/OrderTracking'));
+const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
+const DiscoverPage = React.lazy(() => import('./pages/DiscoverPage'));
 
 // ── Auth Success handler — Google OAuth redirect lands here ─
 function AuthSuccessPage() {
@@ -36,21 +40,27 @@ function AuthSuccessPage() {
   );
 }
 
-// ── Simple path-based routing ───────────────────────────────
-const path = window.location.pathname;
+function PageLoader() {
+  return <div className="route-loader" role="status" aria-label="Loading page" />;
+}
 
 function AppRoutes() {
-  if (path === '/auth' || path === '/login' || path === '/register') return <AuthPage />;
+  const path = window.location.pathname;
+  let Page = NotFoundPage;
+
+  if (path === '/auth' || path === '/login' || path === '/register') Page = AuthPage;
+  else if (path === '/shop') Page = ShopPage;
+  else if (path === '/about') Page = AboutPage;
+  else if (path === '/checkout') Page = CheckoutPage;
+  else if (path === '/new-arrivals' || path === '/collections' || path === '/journal') Page = DiscoverPage;
+  else if (path.startsWith('/orders/') && path.endsWith('/track')) Page = OrderTracking;
+  else if (path.startsWith('/product/')) Page = ProductPage;
+  else if (path === '/profile') Page = ProfilePage;
+  else if (path.startsWith('/admin')) Page = AdminLayout;
+  else if (path === '/') Page = HomePage;
+
   if (path === '/auth-success') return <AuthSuccessPage />;
-  if (path === '/shop')    return <ShopPage />;
-  if (path === '/about')   return <AboutPage />;
-  if (path === '/checkout') return <CheckoutPage />;
-  if (path.startsWith('/orders/') && path.endsWith('/track')) return <OrderTracking />;
-  if (path.startsWith('/product/')) return <ProductPage />;
-  if (path === '/profile') return <ProfilePage />;
-  if (path.startsWith('/admin')) return <AdminLayout />;
-  if (path === '/') return <HomePage />;
-  return <NotFoundPage />;
+  return <React.Suspense fallback={<PageLoader />}><Page /></React.Suspense>;
 }
 
 export default function App() {

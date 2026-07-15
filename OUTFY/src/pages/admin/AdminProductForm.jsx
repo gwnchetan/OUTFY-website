@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { API_BASE } from '../../config/api';
+import { invalidateJson } from '../../lib/apiClient';
 import './AdminProductForm.css';
 
 export default function AdminProductForm({ product, onClose }) {
@@ -72,6 +73,7 @@ export default function AdminProductForm({ product, onClose }) {
         throw new Error(data.message || 'Error saving product');
       }
 
+      invalidateJson(`${API_BASE}/products`);
       onClose(true); // Close and refresh
     } catch (err) {
       alert(err.message);

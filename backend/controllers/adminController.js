@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const User = require('../models/User');
+const { invalidateProductCache } = require('../middleware/publicResponseCache');
 const { canTransition, getNextStates, STATUS_LABELS } = require('../utils/orderStateMachine');
 
 // ─── Dashboard Stats ─────────────────────────────────────────────────────────
@@ -72,6 +73,7 @@ exports.createProduct = async (req, res) => {
   try {
     const newProduct = new Product(req.body);
     const savedProduct = await newProduct.save();
+    invalidateProductCache();
     res.status(201).json({ message: 'Product created successfully', product: savedProduct });
   } catch (error) {
     res.status(400).json({ message: 'Error creating product', error: error.message });
@@ -88,6 +90,7 @@ exports.updateProduct = async (req, res) => {
     if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
+    invalidateProductCache();
     res.json({ message: 'Product updated successfully', product: updatedProduct });
   } catch (error) {
     res.status(400).json({ message: 'Error updating product', error: error.message });
@@ -100,6 +103,7 @@ exports.deleteProduct = async (req, res) => {
     if (!deletedProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
+    invalidateProductCache();
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting product', error: error.message });

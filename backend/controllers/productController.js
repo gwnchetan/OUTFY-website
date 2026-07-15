@@ -1,4 +1,13 @@
 const Product = require('../models/Product');
+const { invalidateProductCache } = require('../middleware/publicResponseCache');
+
+const PRODUCT_CARD_FIELDS = 'name slug category price comparePrice images badge rating stock isFeatured createdAt';
+
+function positiveInteger(value, fallback, max) {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return fallback;
+  return Math.min(parsed, max);
+}
 
 // ─── GET /api/products ────────────────────────────────────────────────────────
 // Query params:
@@ -27,14 +36,9 @@ exports.getProducts = async (req, res) => {
     if (badge)    filter.badge    = badge;
     if (featured === 'true') filter.isFeatured = true;
 
-    // Full-text search OR regex fallback
-    if (search) {
-      filter.$or = [
-        { name:        { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { tags:        { $regex: search, $options: 'i' } },
-        { category:    { $regex: search, $options: 'i' } },
-      ];
+    // Use the text index instead of collection-wide regular-expression scans.
+    if (search?.trim()) {
+      filter.$text = { $search: search.trim().replace(/\s+/g, ' ') };
     }
 
     // Sorting
@@ -46,12 +50,17 @@ exports.getProducts = async (req, res) => {
     };
     const sortObj = sortMap[sort] || { createdAt: -1 };
 
-    const pageNum  = Math.max(1, parseInt(page));
-    const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+    const pageNum  = positiveInteger(page, 1, Number.MAX_SAFE_INTEGER);
+    const limitNum = positiveInteger(limit, 20, 100);
     const skip     = (pageNum - 1) * limitNum;
 
     const [products, total] = await Promise.all([
-      Product.find(filter).sort(sortObj).skip(skip).limit(limitNum).lean(),
+      Product.find(filter)
+        .select(PRODUCT_CARD_FIELDS)
+        .sort(sortObj)
+        .skip(skip)
+        .limit(limitNum)
+        .lean(),
       Product.countDocuments(filter),
     ]);
 
@@ -74,6 +83,7 @@ exports.getProducts = async (req, res) => {
 exports.getFeatured = async (req, res) => {
   try {
     const products = await Product.find({ isActive: true, isFeatured: true })
+      .select(PRODUCT_CARD_FIELDS)
       .sort({ createdAt: -1 })
       .limit(8)
       .lean();
@@ -120,6 +130,7 @@ exports.createProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
+    invalidateProductCache();
     res.status(201).json({ message: 'Product created', product });
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -138,6 +149,7 @@ exports.updateProduct = async (req, res) => {
       { new: true, runValidators: true }
     );
     if (!product) return res.status(404).json({ message: 'Product not found' });
+    invalidateProductCache();
     res.json({ message: 'Product updated', product });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -153,6 +165,7 @@ exports.deleteProduct = async (req, res) => {
       { new: true }
     );
     if (!product) return res.status(404).json({ message: 'Product not found' });
+    invalidateProductCache();
     res.json({ message: 'Product deactivated', product });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });

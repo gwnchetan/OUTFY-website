@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../../styles/home.css';
 import './CollectionSection.css';
 import { useReveal } from '../../hooks/useReveal';
 import { useWishlist } from '../../context/WishlistContext';
 
 import { API_BASE } from '../../config/api';
+import { fetchJson } from '../../lib/apiClient';
 
 const ChevronLeft = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -73,7 +74,7 @@ function ProductCard({ product }) {
   return (
     <a href={`/product/${id}`} className="product-card" role="article" aria-label={product.name}>
       <div className="product-card__img-wrap">
-        <img src={image} alt={product.name} loading="lazy" />
+        <img src={image} alt={product.name} loading="lazy" decoding="async" />
         {product.badge && <span className="product-card__badge">{product.badge}</span>}
         <button
           className={`product-card__wish ${wished ? 'wished' : ''}`}
@@ -112,9 +113,10 @@ export default function CollectionSection() {
 
     const fetchCategoryProducts = async () => {
       try {
-        const res = await fetch(`${API_BASE}/products?category=${encodeURIComponent(backendCategory)}&limit=4`);
-        if (!res.ok) throw new Error('API error');
-        const data = await res.json();
+        const data = await fetchJson(
+          `${API_BASE}/products?category=${encodeURIComponent(backendCategory)}&limit=4`,
+          { ttl: 90_000 },
+        );
         if (active) {
           setDbProducts(data.products || []);
         }
@@ -132,7 +134,10 @@ export default function CollectionSection() {
     return () => { active = false; };
   }, [activeTab]);
 
-  const products = dbProducts.length > 0 ? dbProducts : (PRODUCTS[activeTab] || []);
+  const products = useMemo(
+    () => (dbProducts.length > 0 ? dbProducts : (PRODUCTS[activeTab] || [])),
+    [dbProducts, activeTab],
+  );
 
   // ── Handle entrance animation on load/tab change ──────────
   useEffect(() => {

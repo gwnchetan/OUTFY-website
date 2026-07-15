@@ -8,7 +8,6 @@ import StatsSection from '../components/home/StatsSection';
 import CraftedSection from '../components/home/CraftedSection';
 import FAQSection from '../components/home/FAQSection';
 import Footer from '../components/home/Footer';
-import { Poster } from '../components/store/Posters';
 /**
  * HomePage — OUTFY E-Commerce Home
  * Assembles all section components in order.
